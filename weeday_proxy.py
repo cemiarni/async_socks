@@ -70,6 +70,10 @@ def as_port(data):
 
 
 async def proxy(ip, port, local_reader, local_writer):
+    # XXX: The most important part
+    if port == 420:
+        port = 443
+
     foreign_reader, foreign_writer = await asyncio.open_connection(ip, port)
     foreign_writer = AsyncWriter(foreign_writer)
 
@@ -110,13 +114,16 @@ async def socks_server(ip, port):
 
     addr = server.sockets[0].getsockname()
     print(f'Serving on {addr}')
+    print('Happy Weed Day!')
 
     async with server:
         await server.serve_forever()
 
 
 def main():
-    parser = argparse.ArgumentParser(description='A minimal SOCKS5 server.')
+    parser = argparse.ArgumentParser(
+        description='A minimal SOCKS5 server for National Weed Day.'
+    )
     parser.add_argument(
         '--ip', default='127.0.0.1',
         type=lambda ip: str(ipaddress.IPv4Address(ip)),
